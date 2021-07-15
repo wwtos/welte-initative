@@ -1,6 +1,10 @@
 <script>
+    import { createEventDispatcher } from 'svelte';
+
     import Button from "./Button.svelte";
     import StopText from "./StopText.svelte";
+
+    const dispatch = createEventDispatcher();
 
     export let config = {
         spriteSrcs: [],
@@ -21,6 +25,7 @@
     export let x;
     export let y;
     export let rotation = 0;
+    export let id;
 
     const width = 72;
     const height = 90;
@@ -34,6 +39,11 @@
 
     function toggle() {
         spriteIndex = spriteIndex ? 0 : 1;
+
+        dispatch("change", {
+            state: !!spriteIndex,
+            id
+        });
     }
 </script>
 
