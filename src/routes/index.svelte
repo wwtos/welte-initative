@@ -1,2 +1,9 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<script>
+	import Organ from "$lib/organ/Organ.svelte";
+</script>
+
+<svelte:head>
+	<title>Welcome</title>
+</svelte:head>
+
+<Organ />
