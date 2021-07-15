@@ -2,16 +2,25 @@
     import Button from "./Button.svelte";
     import StopText from "./StopText.svelte";
 
-    export let spriteSrcs;
+    export let config = {
+        spriteSrcs: [],
+        name: "",
+        length: "",
+        abbreviation: "",
+        textColor: ""
+    };
+
+    let {
+        spriteSrcs,
+        name,
+        length,
+        abbreviation,
+        textColor
+    } = config;
+
     export let x;
     export let y;
     export let rotation = 0;
-
-    export let name;
-    export let length;
-    export let abbreviation;
-
-    export let textColor;
 
     const width = 72;
     const height = 90;
@@ -28,19 +37,21 @@
     }
 </script>
 
-<Button {spriteIndex} {spriteSrcs} {x} {y} {width} {height} {rotation} on:click={toggle}></Button>
+<g class="stop">
+    <Button {spriteIndex} {spriteSrcs} {x} {y} {width} {height} {rotation} on:click={toggle}></Button>
 
-{#if length && abbreviation && name}
-<g class="name">
-    <StopText x={x + width / 2} y={y + 16 + textOffset} textSize={nameTextSize} text={name} ref="name" />
+    {#if length && abbreviation && name}
+    <g class="name" fill={textColor}>
+        <StopText x={x + width / 2} y={y + 16 + textOffset} textSize={nameTextSize} text={name} ref="name" />
+    </g>
+    <text x={x + width / 2} y={y + 41 + textOffset} alignment-baseline="middle" fill={textColor} class="length" style="--text-size: {lengthTextSize}px">
+        {length}
+    </text>
+    <text x={x + width / 2} y={y + 60 + textOffset} alignment-baseline="middle" fill={textColor} class="abbreviation" style="--text-size: {abbreviationTextSize}px">
+        {abbreviation}
+    </text>
+    {/if}
 </g>
-<text x={x + width / 2} y={y + 41 + textOffset} alignment-baseline="middle" fill={textColor} class="length" style="--text-size: {lengthTextSize}px">
-    {length}
-</text>
-<text x={x + width / 2} y={y + 60 + textOffset} alignment-baseline="middle" fill={textColor} class="abbreviation" style="--text-size: {abbreviationTextSize}px">
-    {abbreviation}
-</text>
-{/if}
 
 <style>
 .name {
