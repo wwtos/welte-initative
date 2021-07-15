@@ -1,5 +1,6 @@
 <script>
     import Button from "./Button.svelte";
+    import StopText from "./StopText.svelte";
 
     export let spriteSrcs;
     export let x;
@@ -15,9 +16,12 @@
     const width = 72;
     const height = 90;
 
-    const textSize = 10;
+    const nameTextSize = 10;
+    const lengthTextSize = 16;
+    const abbreviationTextSize = 12;
 
     let spriteIndex = 0;
+    $: textOffset = (spriteIndex === 1 ? 10 : 0);
 
     function toggle() {
         spriteIndex = spriteIndex ? 0 : 1;
@@ -27,21 +31,26 @@
 <Button {spriteIndex} {spriteSrcs} {x} {y} {width} {height} {rotation} on:click={toggle}></Button>
 
 {#if length && abbreviation && name}
-    <text x={x + width / 2} y={y + 10} alignment-baseline="hanging" fill={textColor} stroke="none" style="--text-size: {textSize}px">
-        {#each name.split("\n") as line}
-            <tspan x={x + width / 2} dy="1.1em">
-                {line}
-            </tspan>
-        {/each}
-    </text>
+<g class="name">
+    <StopText x={x + width / 2} y={y + 16 + textOffset} textSize={nameTextSize} text={name} ref="name" />
+</g>
+<text x={x + width / 2} y={y + 41 + textOffset} alignment-baseline="middle" fill={textColor} class="length" style="--text-size: {lengthTextSize}px">
+    {length}
+</text>
+<text x={x + width / 2} y={y + 60 + textOffset} alignment-baseline="middle" fill={textColor} class="abbreviation" style="--text-size: {abbreviationTextSize}px">
+    {abbreviation}
+</text>
 {/if}
 
 <style>
-    text {
-        text-anchor: middle;
-        user-select: none;
-        pointer-events: none;
-        font-size: var(--text-size);
-        font-style: italic;
-    }
+.name {
+    font-style: italic;
+}
+
+text {
+    text-anchor: middle;
+    user-select: none;
+    pointer-events: none;
+    font-size: var(--text-size);
+}
 </style>
