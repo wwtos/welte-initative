@@ -40,7 +40,7 @@
     Inputs:
     <select>
         {#each midiInputs as device}
-            <option>{ device.name }</option>
+            <option value={device[0]}>{ device[1].name }</option>
         {/each}
     </select>
 {/if}
