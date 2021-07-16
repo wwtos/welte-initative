@@ -38,19 +38,12 @@ wss.on('connection', ws => {
                         }
                     }));
                 break;
-                case "organist-ice-candidate":
-                    organWebsocket.send(JSON.stringify({
-                        "type": "organist-ice-candidate",
-                        "body": {
-                            "candidate": request.body.candidate
-                        }
-                    }));
-                break;
-                case "organ-ice-candidate":
+                case "ice-candidate":
                     websockets.find(websocket => websocket.uid === request.body.to).send(JSON.stringify({
-                        "type": "organ-ice-candidate",
+                        "type": "ice-candidate",
                         "body": {
-                            "candidate": request.body.candidate
+                            "candidate": request.body.candidate,
+                            "from": ws.uid
                         }
                     }));
                 break;
