@@ -1,5 +1,4 @@
 import WebSocket from 'ws';
-import {getSession} from '../lib/db/connect.js';
 
 const wss = new WebSocket.Server({
     port: 3001
@@ -20,30 +19,30 @@ wss.on('connection', ws => {
 
         if(request.type) {
             switch(request.type) {
-                case "organ-stream-offer":
+                case "organist-stream-offer":
                     organWebsocket.send(JSON.stringify({
-                        "type": "organ-stream-offer",
+                        "type": "organist-stream-offer",
+                        "from": ws.uid,
                         "body": {
-                            "sdp": request.body.sdp,
-                            "from": ws.uid
+                            "sdp": request.body.sdp
                         }
                     }));
                 break;
                 case "organ-stream-answer":
                     websockets.find(websocket => websocket.uid === request.body.to).send(JSON.stringify({
                         "type": "organ-stream-answer",
+                        "from": ws.uid,
                         "body": {
-                            "sdp": request.body.sdp,
-                            "from": ws.uid
+                            "sdp": request.body.sdp
                         }
                     }));
                 break;
                 case "ice-candidate":
                     websockets.find(websocket => websocket.uid === request.body.to).send(JSON.stringify({
                         "type": "ice-candidate",
+                        "from": ws.uid,
                         "body": {
-                            "candidate": request.body.candidate,
-                            "from": ws.uid
+                            "candidate": request.body.candidate
                         }
                     }));
                 break;
