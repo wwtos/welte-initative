@@ -14,16 +14,18 @@
             mediaStreamStore.subscribe(stream => {
                 if(!stream) return;
 
-                connection = new OrganConnection(ws, mediaStreamStore);
+                connection = new OrganConnection(ws, stream);
 
                 connection.identifyAsOrgan();
             });
         };
         
         ws.onmessage = (event) => {
-            const request = JSON.parse(event.data);
+            const msg = JSON.parse(event.data);
 
-            switch(request.type) {
+            console.log("got ", msg);
+
+            switch(msg.type) {
                 case "organist-stream-offer":
                     connection.handleOfferMsg(msg);
                 break;

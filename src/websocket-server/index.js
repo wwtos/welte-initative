@@ -28,6 +28,12 @@ wss.on('connection', ws => {
 
         if(request.type) {
             switch(request.type) {
+                case "get-organ-id":
+                    respond(ws, {
+                        "type": "organ-id",
+                        "body": organWebsocket.uid
+                    })
+                break;
                 case "organist-stream-offer":
                     respond(organWebsocket, {
                         "type": "organist-stream-offer",
@@ -66,7 +72,5 @@ wss.on('connection', ws => {
 
     ws.on("close", () => {
         websockets = websockets.filter(websocket => websocket !== ws);
-    })
-
-    ws.send('something');
+    });
 });

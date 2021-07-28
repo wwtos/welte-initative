@@ -1,8 +1,14 @@
 export function sendOffer(ws, sdp) {
     ws.send(JSON.stringify({
-        "type": "organ-stream-offer",
+        "type": "organist-stream-offer",
         "body": {
             "sdp": sdp
         }
-    }))
+    }));
+}
+
+export function askForOrganId(ws) {
+    ws.send(JSON.stringify({
+        "type": "get-organ-id"
+    }));
 }

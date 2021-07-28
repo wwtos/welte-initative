@@ -4,10 +4,14 @@ import {sendAnswer, sendIsOrgan} from "../ws/organ-ws.js";
 import {sendIceCandidate} from "../ws/ws.js";
 
 const OrganConnection = function(ws, localStream) {
+    console.log(localStream);
+
     this.ws = ws;
     this.peerConnection = null;
     this.peerId = -1;
     this.localStream = localStream;
+
+    this.dataTrack;
 
     this.handleICECandidateEvent = this.handleICECandidateEvent.bind(this);
     this.handleRemoteICECandidateEvent = this.handleRemoteICECandidateEvent.bind(this);
@@ -29,6 +33,8 @@ OrganConnection.prototype.handleOfferMsg = async function(msg) {
 
     await this.peerConnection.setRemoteDescription(desc);
     await this.localStream.getTracks().forEach(track => this.peerConnection.addTrack(track, this.localStream));
+
+    this.dataTrack = this.peerConnection.createDataChannel("MIDI");
 
     const answer = await this.peerConnection.createAnswer();
     await this.peerConnection.setLocalDescription(answer);

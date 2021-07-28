@@ -1,4 +1,4 @@
-import {sendOffer} from "../ws/organist-ws.js";
+import {sendOffer, askForOrganId} from "../ws/organist-ws.js";
 import {sendIceCandidate} from "../ws/ws.js";
 
 import {createPeerConnection} from "./util.js";
@@ -18,11 +18,21 @@ const OrganistConnection = function(ws, videoElement) {
     this.handleRemoveTrackEvent = this.handleRemoveTrackEvent.bind(this);
 };
 
+OrganistConnection.prototype.askForOrganId = function() {
+    askForOrganId(this.ws);
+};
+
 OrganistConnection.prototype.createPeerConnection = function() {
     this.peerConnection = createPeerConnection(this);
 };
 
+OrganistConnection.prototype.addDataTrack = function() {
+    this.peerConnection.createDataChannel("MIDI");
+};
+
 OrganistConnection.prototype.handleNegotiationNeededEvent = async function() {
+    console.log("negotiation needed");
+
     const offer = await this.peerConnection.createOffer({
         'mandatory': {
             'OfferToReceiveAudio': true,
