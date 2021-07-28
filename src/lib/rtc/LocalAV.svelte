@@ -1,13 +1,13 @@
 <script>
     import { onMount } from 'svelte';
 
+    export let mediaStreamStore;
+
     let audioSources = [];
     let videoSources = [];
 
     let audioSource;
     let videoSource;
-
-    $: console.log(videoSource);
 
     $: requestMedia(audioSource, videoSource);
 
@@ -23,6 +23,7 @@
         videoSources = devices.filter(device => device.kind === "videoinput");
 
         navigator.mediaDevices.getUserMedia(mediaConstraints).then(localStream => {
+            mediaStreamStore.update(_ => localStream);
             document.getElementById("local_video").srcObject = localStream;
         });
     }
