@@ -1,6 +1,7 @@
 import {createPeerConnection} from "./util.js";
 
-import {sendAnswer, sendIceCandidate} from "../ws/organ-ws.js";
+import {sendAnswer, sendIsOrgan} from "../ws/organ-ws.js";
+import {sendIceCandidate} from "../ws/ws.js";
 
 const OrganConnection = function(ws, localStream) {
     this.ws = ws;
@@ -15,7 +16,11 @@ const OrganConnection = function(ws, localStream) {
     this.handleRemoveTrackEvent = this.handleRemoveTrackEvent.bind(this);
 };
 
-OrganConnection.handleOfferMsg = async function(msg) {
+OrganConnection.prototype.identifyAsOrgan = function() {
+    sendIsOrgan(this.ws);
+};
+
+OrganConnection.prototype.handleOfferMsg = async function(msg) {
     this.peerId = msg.from;
 
     this.peerConnection = createPeerConnection(this);

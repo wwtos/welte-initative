@@ -7,3 +7,9 @@ export function sendAnswer(ws, sdp, to) {
         }
     }));
 }
+
+export function sendIsOrgan(ws) {
+    ws.send(JSON.stringify({
+        "type": "am-organ"
+    }))
+}
