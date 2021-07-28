@@ -1,6 +1,10 @@
 export function createPeerConnection(config) {
     const myPeerConnection = new RTCPeerConnection({
-        iceServers: []
+        iceServers: [     // Information about ICE servers - Use your own!
+          {
+            urls: "stun:stun.stunprotocol.org"
+          }
+        ]
     });
 
     myPeerConnection.onicecandidate = config.handleICECandidateEvent;
