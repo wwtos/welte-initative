@@ -9,6 +9,7 @@ export function createPeerConnection(config) {
 
     myPeerConnection.onicecandidate = config.handleICECandidateEvent;
     myPeerConnection.ontrack = config.handleTrackEvent;
+    myPeerConnection.ondatachannel = config.handleDataChannelEvent;
     myPeerConnection.onnegotiationneeded = config.handleNegotiationNeededEvent;
     myPeerConnection.onremovetrack = config.handleRemoveTrackEvent;
     myPeerConnection.oniceconnectionstatechange = config.handleICEConnectionStateChangeEvent;
