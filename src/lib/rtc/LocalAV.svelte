@@ -14,13 +14,13 @@
     async function requestMedia(audioId, videoId) {
         const mediaConstraints = {
             audio: audioId ? {deviceId: audioId} : true,
-            video: videoId ? {deviceId: videoId} : true
+            video: /*videoId ? {deviceId: videoId} : true*/ false
         };
 
         const devices = await navigator.mediaDevices.enumerateDevices();
 
         audioSources = devices.filter(device => device.kind === "audioinput");
-        videoSources = devices.filter(device => device.kind === "videoinput");
+        //videoSources = devices.filter(device => device.kind === "videoinput");
 
         navigator.mediaDevices.getUserMedia(mediaConstraints).then(localStream => {
             mediaStreamStore.update(_ => localStream);

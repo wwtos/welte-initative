@@ -31,9 +31,9 @@ OrganistConnection.prototype.addTracks = function() {
         direction: "recvonly"
     });
 
-    this.peerConnection.addTransceiver("video", {
-        direction: "recvonly"
-    });
+    // this.peerConnection.addTransceiver("video", {
+    //     direction: "recvonly"
+    // });
 
     this.midiChannel = this.peerConnection.createDataChannel("MIDI");
 };
