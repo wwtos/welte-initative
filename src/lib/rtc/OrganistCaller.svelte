@@ -5,20 +5,15 @@
 
     function offer() {
         connection.createPeerConnection();
-        connection.addDataTrack();
-
-        console.log(connection.peerConnection);
+        connection.addTracks();
     }
 
     function prime() {
         const ws = new WebSocket("ws://localhost:3001");
 
         ws.onopen = () => {
-            console.log("ws opened");
-
             connection = new OrganistConnection({
                 send: message => {
-                    console.log("sending", message);
                     ws.send(message);
                 }
             }, document.getElementById("remote-video"));
@@ -28,8 +23,6 @@
         
         ws.onmessage = (event) => {
             const msg = JSON.parse(event.data);
-
-            console.log("got ", msg);
 
             switch(msg.type) {
                 case "organ-id":
@@ -50,7 +43,7 @@
 
 <div>
     Call area
-    <video id="remote-video"></video>
+    <video id="remote-video" autoplay></video>
     <button on:click={prime}>Start call</button>
 </div>
 
