@@ -26,19 +26,18 @@ OrganistConnection.prototype.createPeerConnection = function() {
     this.peerConnection = createPeerConnection(this);
 };
 
-OrganistConnection.prototype.addDataTrack = function() {
-    this.peerConnection.createDataChannel("MIDI");
+OrganistConnection.prototype.addTracks = function() {
+    this.peerConnection.addTransceiver("audio", {
+        direction: "recvonly"
+    });
+
+    this.peerConnection.addTransceiver("video", {
+        direction: "recvonly"
+    });
 };
 
 OrganistConnection.prototype.handleNegotiationNeededEvent = async function() {
-    console.log("negotiation needed");
-
-    const offer = await this.peerConnection.createOffer({
-        'mandatory': {
-            'OfferToReceiveAudio': true,
-            'OfferToReceiveVideo': true
-        }
-    });
+    const offer = await this.peerConnection.createOffer();
     
     await this.peerConnection.setLocalDescription(offer);
 
@@ -50,7 +49,7 @@ OrganistConnection.prototype.handleAnswerMsg = async function(msg) {
 
     this.peerId = msg.from;
 
-    await this.peerConnection.setLocalDescription(description);
+    await this.peerConnection.setRemoteDescription(description);
 };
 
 OrganistConnection.prototype.handleICECandidateEvent = function(event) {
