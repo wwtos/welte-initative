@@ -34,6 +34,8 @@ OrganistConnection.prototype.addTracks = function() {
     this.peerConnection.addTransceiver("video", {
         direction: "recvonly"
     });
+
+    this.midiChannel = this.peerConnection.createDataChannel("MIDI");
 };
 
 OrganistConnection.prototype.handleNegotiationNeededEvent = async function() {
