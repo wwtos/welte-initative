@@ -1,12 +1,24 @@
 <script>
     import { OrganistConnection } from '$lib/rtc/organist-util.js';
 
+    export let nextMidiMessage;
+
     let connection;
 
     function offer() {
         connection.createPeerConnection();
         connection.addTracks();
     }
+
+    nextMidiMessage.subscribe(message => {
+        if(message) {
+            const data = message.data;
+            
+            if(connection && connection.midiChannel) {
+                connection.midiChannel.send(data);
+            }
+        }
+    });
 
     function prime() {
         const ws = new WebSocket("ws://localhost:3001");
