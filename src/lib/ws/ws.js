@@ -1,5 +1,7 @@
+import config from '../../../config.js';
+
 export function createWebsocket() {
-    const ws = new WebSocket("ws://localhost:3001");
+    const ws = new WebSocket(config.wsAddress);
 
     return ws;
 }

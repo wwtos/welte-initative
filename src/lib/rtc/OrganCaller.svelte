@@ -1,7 +1,8 @@
 <script>
     import { onMount } from 'svelte';
-
     import { OrganConnection } from '$lib/rtc/organ-util.js';
+
+    import config from '../../../config.js';
 
     export let mediaStreamStore;
     export let incomingMidiStore;
@@ -13,7 +14,7 @@
     }
 
     function prime() {
-        const ws = new WebSocket("ws://localhost:3001");
+        const ws = new WebSocket(config.wsAddress);
 
         ws.onopen = () => {
             mediaStreamStore.subscribe(stream => {
