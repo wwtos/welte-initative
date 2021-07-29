@@ -23,8 +23,6 @@
         ws.onmessage = (event) => {
             const msg = JSON.parse(event.data);
 
-            console.log("got ", msg);
-
             switch(msg.type) {
                 case "organist-stream-offer":
                     connection.handleOfferMsg(msg);

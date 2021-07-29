@@ -4,8 +4,6 @@ import {sendAnswer, sendIsOrgan} from "../ws/organ-ws.js";
 import {sendIceCandidate} from "../ws/ws.js";
 
 const OrganConnection = function(ws, localStream) {
-    console.log(localStream);
-
     this.ws = ws;
     this.peerConnection = null;
     this.peerId = -1;
@@ -55,7 +53,7 @@ OrganConnection.prototype.handleRemoteICECandidateEvent = function(msg) {
 };
 
 OrganConnection.prototype.handleTrackEvent = function(event) {
-    this.videoElement.srcObject = event.streams[0];
+    
 };
 
 OrganConnection.prototype.handleRemoveTrackEvent = function() {
