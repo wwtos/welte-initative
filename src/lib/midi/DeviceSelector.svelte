@@ -1,6 +1,9 @@
 <script>
     import { onMount } from 'svelte';
 
+    export let inputMidiDeviceStore;
+    export let outputMidiDeviceStore;
+
     export let listInputs = false;
     export let listOutputs = false;
 
@@ -8,6 +11,9 @@
 
     let midiInputs = [];
     let midiOutputs = [];
+
+    let inputDeviceId;
+    let outputDeviceId;
 
     function initDeviceList() {
         if(listInputs) {
@@ -31,6 +37,18 @@
         alert("Cannot run this program without MIDI access.");
     }
 
+    function midiInputChanged() {
+        if(listInputs) {
+            inputMidiDeviceStore.update(_ => midi.inputs.get(inputDeviceId));
+        }
+    }
+
+    function midiOutputChanged() {
+        if(listOutputs) {
+            outputMidiDeviceStore.update(_ => midi.outputs.get(outputDeviceId));
+        }
+    }
+
     onMount(async () => {
         navigator.requestMIDIAccess().then(onMIDISuccess, onMIDIFailure);
     });
@@ -38,7 +56,7 @@
 
 {#if listInputs}
     Inputs:
-    <select>
+    <select bind:value={inputDeviceId} on:change={midiInputChanged}>
         {#each midiInputs as device}
             <option value={device[0]}>{ device[1].name }</option>
         {/each}
@@ -47,7 +65,7 @@
 
 {#if listOutputs}
     Outputs:
-    <select>
+    <select bind:value={outputDeviceId} on:change={midiOutputChanged}>
         {#each midiOutputs as device}
             <option value={device[0]}>{ device[1].name }</option>
         {/each}
