@@ -3,20 +3,27 @@ import {createPeerConnection} from "./util.js";
 import {sendAnswer, sendIsOrgan} from "../ws/organ-ws.js";
 import {sendIceCandidate} from "../ws/ws.js";
 
+import { createNanoEvents } from 'nanoevents';
+
 const OrganConnection = function(ws, localStream) {
     this.ws = ws;
     this.peerConnection = null;
     this.peerId = -1;
     this.localStream = localStream;
 
-    this.dataTrack;
+    this.midiChannel;
 
     this.handleICECandidateEvent = this.handleICECandidateEvent.bind(this);
     this.handleRemoteICECandidateEvent = this.handleRemoteICECandidateEvent.bind(this);
 
-    this.handleTrackEvent = this.handleTrackEvent.bind(this);
+    this.handleDataChannelEvent = this.handleDataChannelEvent.bind(this);
     this.handleRemoveTrackEvent = this.handleRemoveTrackEvent.bind(this);
+
+    this._emitter = createNanoEvents();
+    this.on = this._emitter.on.bind(this._emitter);
 };
+
+OrganConnection.prototype.on = function() {}; // implemented in decleration
 
 OrganConnection.prototype.identifyAsOrgan = function() {
     sendIsOrgan(this.ws);
@@ -52,8 +59,9 @@ OrganConnection.prototype.handleRemoteICECandidateEvent = function(msg) {
     this.peerConnection.addIceCandidate(candidate); // TODO: catch errors
 };
 
-OrganConnection.prototype.handleTrackEvent = function(event) {
-    
+OrganConnection.prototype.handleDataChannelEvent = function(event) {
+    this.midiChannel = event.channel;
+    this._emitter.emit("datachannel", this.midiChannel);
 };
 
 OrganConnection.prototype.handleRemoveTrackEvent = function() {
