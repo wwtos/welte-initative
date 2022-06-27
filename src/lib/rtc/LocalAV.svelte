@@ -9,8 +9,6 @@
     let audioSource;
     let videoSource;
 
-    $: requestMedia(audioSource, videoSource);
-
     async function requestMedia(audioId, videoId) {
         const mediaConstraints = {
             audio: audioId ? {deviceId: audioId} : true,
@@ -44,13 +42,13 @@
 </video>
 
 Audio:
-<select bind:value={audioSource}>
+<select bind:value={audioSource} on:change={requestMedia(audioSource, videoSource)}>
     {#each audioSources as audioSource}
         <option value={audioSource.deviceId}>{audioSource.label}</option>
     {/each}
 </select>
 Video:
-<select bind:value={videoSource}>
+<select bind:value={videoSource} on:change={requestMedia(audioSource, videoSource)}>
     {#each videoSources as videoSource}
         <option value={videoSource.deviceId}>{videoSource.label}</option>
     {/each}
