@@ -11,7 +11,7 @@ let organWebsocket = null;
 let uid = 0;
 
 function respond(to, message) {
-    console.log("sent", JSON.stringify(message), "to ", to.uid);
+    console.log("sent", JSON.stringify(message), "to ", to ? to.uid : "no uid");
     to.send(JSON.stringify(message));
 }
 
